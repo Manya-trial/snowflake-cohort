@@ -1,0 +1,9 @@
+-- Day 2: masking policy
+USE ROLE ACCOUNTADMIN;
+
+CREATE MASKING POLICY IF NOT EXISTS retail_lakehouse.bronze.email_mask
+  AS (val STRING) RETURNS STRING ->
+  CASE
+    WHEN CURRENT_ROLE() IN ('ACCOUNTADMIN', 'DATA_ENGINEER') THEN val
+    ELSE '***MASKED***'
+  END;
